@@ -230,7 +230,7 @@ body { background: var(--bg-0); color: var(--tx-1); font-family: var(--sans); -w
 const SUPA_URL='https://xptvjwceoknmfringzju.supabase.co';
 const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhwdHZqd2Nlb2tubWZyaW5nemp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA1Nzk2NTMsImV4cCI6MjA4NjE1NTY1M30.r8FDRn7HzqBLuZ1HvFB1aQelJV_GFn9C87a6MHY8fWo';
 const sb=supabase.createClient(SUPA_URL,SUPA_KEY);
-let MODE=null,profile=null,authMode='register',currentView='feed';
+var MODE=null,profile=null,authMode='register',currentView='feed';
 const nameCache={};
 function timeAgo(ts){const d=Date.now()-new Date(ts).getTime();const m=Math.floor(d/60000);if(m<1)return'just now';if(m<60)return m+' min ago';const h=Math.floor(m/60);if(h<24)return h+' hr ago';return Math.floor(h/24)+'d ago';}
 function fmtTime(ts){return new Date(ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});}
@@ -374,7 +374,7 @@ async function renderMyVentures(el){
 async function renderGovernance(el){
   const isH=MODE==='human';
   const{data:votes}=await sb.from('governance_votes').select('*').eq('status','open').order('created_at',{ascending:false});
-  const vIds=(votes||[]).map(v=>v.id);let entries=[];
+  const vIds=(votes||[]).map(v=>v.id);var entries=[];
   if(vIds.length){const{data}=await sb.from('vote_entries').select('vote_id, choice').in('vote_id',vIds);entries=data||[];}
   let myVotes={};
   if(profile?.id&&vIds.length){const{data}=await sb.from('vote_entries').select('vote_id, choice').eq('voter_id',profile.id).in('vote_id',vIds);(data||[]).forEach(v=>myVotes[v.vote_id]=v.choice);}
